@@ -6,7 +6,17 @@ from functools import reduce
 
 
 
-def empowerment(maze, n_step = 5, det = 1., n_samples = 5000):
+def empowerment(maze, n_step = 5, n_samples = 5000, det = 1.):
+    """ 
+    Computes the empowerment of each cell in MazeWorld and returns as array. 
+
+    n_step : integer 
+        Number of steps in n-step empowerment.
+    n_samples : integer
+        Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
+    det : float between 0 and 1
+        Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
+    """
     actions = {
         0 : "N",
         1 : "S",
