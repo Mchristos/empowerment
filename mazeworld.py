@@ -10,9 +10,9 @@ def empowerment(maze, n_step = 5, n_samples = 5000, det = 1.):
     """ 
     Computes the empowerment of each cell in MazeWorld and returns as array. 
 
-    n_step : integer 
+    n_step : int
         Number of steps in n-step empowerment.
-    n_samples : integer
+    n_samples : int
         Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
     det : float between 0 and 1
         Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
@@ -59,9 +59,17 @@ def empowerment(maze, n_step = 5, n_samples = 5000, det = 1.):
     
 
 class MazeWorld(object):
-    """ Represents an nxm maze """
+    """ Represents an n x m grid world with walls at various locations. Actions can be performed (N, S, E, W, "stay") moving a player around the grid world. You can't move through walls. """
 
     def __init__(self, height, width, toroidal = False):
+        """ 
+        height : int 
+            Height of grid world 
+        width : int
+            Width of grid world 
+        toroidal: 
+            If true, player can move off the edge of the world, appearing on the other side.   
+        """
         self.dims = [height, width]
         self.adjacencies = dict()
         self.actions = {
