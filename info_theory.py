@@ -1,3 +1,16 @@
+"""
+Information Theory 
+
+This module contains functions for computing information-theoretic quantities on discrete probability distributions. Includes computation of 
+
+- Entropy 
+- Conditional Entropy
+- KL Divergence 
+- Mutual Information 
+- Channel Capacity (using the Blahut-Arimoto algorithm)
+
+ """
+
 import numpy as np 
 from numpy import log2
 
