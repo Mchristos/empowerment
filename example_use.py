@@ -1,7 +1,7 @@
 from mazeworld import MazeWorld, empowerment
 import matplotlib.pyplot as plt
 
-def klubin_example():      
+def example_1():      
     """ builds maze world from original empowerment paper(https://uhra.herts.ac.uk/bitstream/handle/2299/1918/901933.pdf?sequence=1) and plots empowerment landscape. 
     """  
     maze = MazeWorld(10,10)
@@ -28,7 +28,7 @@ def klubin_example():
     plt.title('5-step empowerment')
     plt.show()
 
-def door_example():
+def example_2():
     """ builds grid world with doors and plots empowerment landscape """ 
     maze = MazeWorld(8,8)
     for i in range(maze.width):
@@ -42,4 +42,6 @@ def door_example():
     plt.show()
 
 if __name__ == "__main__":
-    door_example()
+    ## uncomment below to see examples 
+    example_1()
+    # example_2()
