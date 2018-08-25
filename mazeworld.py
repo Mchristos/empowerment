@@ -18,6 +18,8 @@ class MazeWorld(object):
             If true, player can move off the edge of the world, appearing on the other side.   
         """
         self.dims = [height, width]
+        self.height = height
+        self.width = width
         self.adjacencies = dict()
         self.actions = {
             "N" : np.array([1, 0]), # UP
