@@ -3,60 +3,7 @@ import matplotlib.pyplot as plt
 import itertools
 from info_theory import blahut_arimoto
 from functools import reduce
-
-
-
-def empowerment(maze, n_step = 5, n_samples = 5000, det = 1.):
-    """ 
-    Computes the empowerment of each cell in MazeWorld and returns as array. 
-
-    n_step : int
-        Number of steps in n-step empowerment.
-    n_samples : int
-        Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
-    det : float between 0 and 1
-        Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
-    """
-    actions = {
-        0 : "N",
-        1 : "S",
-        2 : "E",
-        3 : "W",
-        4 : "_" 
-    }
-    n_actions = len(actions)
-    n_states = maze.dims[0]*maze.dims[1]
-    B = np.zeros([n_states,n_actions,n_states])
-    for s in range(n_states):
-        for a in actions.keys():
-            s_new = maze.act(s, actions[a])
-            s_unc = list(map(lambda x : maze.act(s, actions[x]), filter(lambda x : x != a, actions.keys())))
-            B[s_new, a, s] += det
-            for su in s_unc:
-                B[su, a, s] += (1-det)/(len(s_unc))
-    def empowerment(state, det):
-        if det == 1.:
-            nstep_samples = np.random.randint(0,n_actions, [n_samples,n_step] )
-            # fold over each nstep actions, get unique end states
-            tmap = lambda s, a : np.argmax(B[:,a,s]) 
-            seen = set()
-            for i in range(len(nstep_samples)):
-                aseq = nstep_samples[i,:]
-                seen.add(reduce(tmap, [state,*aseq]))
-            return np.log2(len(seen))
-        else:
-            nstep_actions = list(itertools.product(range(n_actions), repeat = n_step))
-            Bn = np.zeros([n_states, len(nstep_actions), n_states])
-            for i, an in enumerate(nstep_actions):
-                Bn[:, i , :] = reduce((lambda x, y : np.dot(y, x)), map((lambda a : B[:,a,:]), an))
-            return blahut_arimoto(Bn[:,:,state], epsilon=1e-10)
-    E = np.zeros(maze.dims)
-    for y in range(maze.dims[0]):
-        for x in range(maze.dims[1]):
-            s = maze._cell_to_index((y,x))
-            E[y,x] = empowerment(s, det)
-    return E
-    
+from empowerment import empowerment    
 
 class MazeWorld(object):
     """ Represents an n x m grid world with walls at various locations. Actions can be performed (N, S, E, W, "stay") moving a player around the grid world. You can't move through walls. """
@@ -169,4 +116,34 @@ class MazeWorld(object):
         if action is not None:
             plt.title(str(action))
 
+    def empowerment(self, n_step, n_samples = 5000, det = 1.):
+        """ 
+        Computes the empowerment of each cell and returns as array. 
+
+        n_step : int
+            Determines the "time horizon" of the empowerment computation. The computed empowerment is the influence the agent has on the future over an n_step time horizon.
+        n_samples : int
+            Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
+        det : float between 0 and 1
+            Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
+        """
+
+        n_actions = len(self.actions)
+        n_states = self.dims[0]*self.dims[1]
+        # compute environment dynamics as a matrix T 
+        T = np.zeros([n_states,n_actions,n_states])
+        # T[s',a,s] is the probability of landing in s' given action a is taken in state s.
+        for s in range(n_states):
+            for i, a in enumerate(self.actions.keys()):
+                s_new = self.act(s, a)
+                s_unc = list(map(lambda x : self.act(s, x), filter(lambda x : x != a, self.actions.keys())))
+                T[s_new, i, s] += det
+                for su in s_unc:
+                    T[su, i, s] += (1-det)/(len(s_unc))
+        E = np.zeros(self.dims)
+        for y in range(self.dims[0]):
+            for x in range(self.dims[1]):
+                s = self._cell_to_index((y,x))
+                E[y,x] = empowerment(T=T, det = (det == 1.), n_step = n_step, state=s, n_samples=n_samples)
+        return E
 
