@@ -41,7 +41,7 @@ In this section we reproduce the grid world presented in the original Klyubin pa
     maze.add_wall( (8, 4), "W")
     maze.add_wall( (8, 3), "N")
     # compute the 5-step empowerment at each cell 
-    E = empowerment(maze, n_step=5, n_samples=1000)
+    E = maze.empowerment(n_step=5)
     # plot the maze world
     maze.plot(colorMap=E)
     plt.title('5-step empowerment')
