@@ -16,8 +16,14 @@ Rt, St, and At represent the state of the environment, the sensory state and the
 
 This repository allows you to calculate empowerment and experiment with it in various settings. As mentioned in the previous section, empowerment measures the channel capacity of the information-theoretic channel describing how actions determine future states.
 
-## Example: Klyubin's Maze World 
-In this section we reproduce the grid world presented in the original Klyubin paper on empowerment [1]. 
+- mazeworld.py provides a class MazeWorld which allows you to create arbitrary grid worlds with walls like in the examples below, and compute the empowerment of cells in the grid.  
+- empowerment.py is a module allowing you to compute empowerment in arbitrary environments described by a probabilistic transition rule p(s'|s,a) - the probability of landing in state s' given you did action a in state s.
+- info_theory.py is a module containing various functions for computing information-theoretic quantities such as entropy, conditional entropy, mutual information, and channel capacity. It includes an implementation of the blahut-arimoto algorithm for computing the channel capacity. This is used to compute the empowerment in non-deterministic environments. 
+
+## Example Usage 
+
+### Klyubin's Maze World 
+In this example we reproduce the grid world presented in the original Klyubin paper on empowerment [1]. 
 
     from mazeworld import MazeWorld, empowerment
     import matplotlib.pyplot as plt
@@ -47,7 +53,22 @@ In this section we reproduce the grid world presented in the original Klyubin pa
     plt.title('5-step empowerment')
     plt.show()
 
-<img width="641" alt="5stepempowerment" src="https://user-images.githubusercontent.com/13951953/44586448-9d958900-a7a7-11e8-97dd-51ff4fc223d0.png">
+<img width="500" alt="" src="https://user-images.githubusercontent.com/13951953/44622686-80e77700-a8b5-11e8-9386-738a9fdbb56b.png">
 
+### Doorways
+Here is another simple example of a small grid world with two doorways. The doorways are highly empowered in 4 steps, since more states are reachable within four steps from doorways. 
+
+    maze = MazeWorld(8,8)
+    for i in range(maze.width):
+        if i is not 6 : maze.add_wall([2, i], "N") 
+    for i in range(maze.width):
+        if i is not 2 : maze.add_wall([5, i], "N")
+    n_step = 4
+    E = maze.empowerment(n_step=n_step)
+    maze.plot(colorMap=E)
+    plt.title('%i-step empowerment' % n_step)
+    plt.show()
+    
+<img width="500" alt="" src="https://user-images.githubusercontent.com/13951953/44622721-40d4c400-a8b6-11e8-85e9-ee503e0319c8.png">
 
 [1] Klyubin, A.S., Polani, D. and Nehaniv, C.L., 2005, September. All else being equal be empowered. In European Conference on Artificial Life (pp. 744-753). Springer, Berlin, Heidelberg.
