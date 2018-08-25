@@ -6,7 +6,11 @@ Reinforcement learning is a powerful tool for teaching agents complex skills bas
 
 In the absence of specific rewards provided by external entities, autonomous agents should be self-motivated, and driven by behaving in such a way that makes them more prepared for future tasks or challenges. **Empowerment** has been proposed as an **intrinsic motivation** for autonomous behaviour [in this paper](https://uhra.herts.ac.uk/bitstream/handle/2299/1918/901933.pdf?sequence=1) [1]. I've also written about empowerment [in this article](https://towardsdatascience.com/empowerment-as-intrinsic-motivation-b84af36d5616). 
 
-Empowerment measures how much power an agent has to influence the state of its environment. 
+Empowerment measures how much power an agent has to influence the state of its environment. Crucially, though, it measures only that change which is detectable via the sensors. In other words - how much influence do I have over my future sensory states? To quantify this precisely, we consider the information-theoretic channel describing how actions influence subsequent sensory states. The concept can easily be generalized to consider sequences of n actions: how much can I inluence the state of the environment over n steps? Below we illustrate these information-theoretic channels defining empowerment. 
+
+<img width="641" alt="emp_network" src="https://user-images.githubusercontent.com/13951953/44619336-b15eef00-a87c-11e8-9fea-6eb8c564fbb7.png">
+
+Rt, St, and At represent the state of the environment, the sensory state and the action taken at time t, respectively. 
 
 ## What is this repo?
 
