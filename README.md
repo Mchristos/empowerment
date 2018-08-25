@@ -16,9 +16,9 @@ Rt, St, and At represent the state of the environment, the sensory state and the
 
 This repository allows you to calculate empowerment and experiment with it in various settings. As mentioned in the previous section, empowerment measures the channel capacity of the information-theoretic channel describing how actions determine future states.
 
-- mazeworld.py provides a class MazeWorld which allows you to create arbitrary grid worlds with walls like in the examples beloew, and compute the empowerment of states 
-- empowerment.py is a module allowing you to compute empowerment in arbitrary environments described by a probabilistic transition rule p(s'|s,a) - probability of landing in state s' given you did action a in state s.
-- info_theory.py is a module containing various functions for computing information-theoretic quantities such as entropy, conditional entropy, mutual information, and channel capacity. It includes an implementation of the blahut-arimoto algorithm for channel capacity. This is used to compute the empowerment in non-deterministic environments. 
+- mazeworld.py provides a class MazeWorld which allows you to create arbitrary grid worlds with walls like in the examples below, and compute the empowerment of cells in the grid.  
+- empowerment.py is a module allowing you to compute empowerment in arbitrary environments described by a probabilistic transition rule p(s'|s,a) - the probability of landing in state s' given you did action a in state s.
+- info_theory.py is a module containing various functions for computing information-theoretic quantities such as entropy, conditional entropy, mutual information, and channel capacity. It includes an implementation of the blahut-arimoto algorithm for computing the channel capacity. This is used to compute the empowerment in non-deterministic environments. 
 
 ## Example Usage 
 
