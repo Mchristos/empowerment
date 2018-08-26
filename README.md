@@ -14,7 +14,7 @@ Rt, St, and At represent the state of the environment, the sensory state and the
 
 ## What is this repo?
 
-This repository allows you to calculate empowerment and experiment with it in various settings. As mentioned in the previous section, empowerment measures the channel capacity of the information-theoretic channel describing how actions determine future states.
+This repository allows you to calculate empowerment and experiment with it in various settings. As mentioned in the previous section, empowerment measures the capacity of the (noisy) channel relating actions to future sensory readings. 
 
 - mazeworld.py provides a class MazeWorld which allows you to create arbitrary grid worlds with walls like in the examples below, and compute the empowerment of cells in the grid.  
 - empowerment.py is a module allowing you to compute empowerment in arbitrary environments described by a probabilistic transition rule p(s'|s,a) - the probability of landing in state s' given you did action a in state s.
@@ -25,7 +25,7 @@ This repository allows you to calculate empowerment and experiment with it in va
 ### Klyubin's Maze World 
 In this example we reproduce the grid world presented in the original Klyubin paper on empowerment [1]. 
 
-    from mazeworld import MazeWorld, empowerment
+    from mazeworld import MazeWorld
     import matplotlib.pyplot as plt
 
     # build klyubin maze world 
