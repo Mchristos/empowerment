@@ -118,18 +118,8 @@ class MazeWorld(object):
         if action is not None:
             plt.title(str(action))
 
-    def empowerment(self, n_step, n_samples = 5000, det = 1.):
-        """ 
-        Computes the empowerment of each cell and returns as array. 
-
-        n_step : int
-            Determines the "time horizon" of the empowerment computation. The computed empowerment is the influence the agent has on the future over an n_step time horizon.
-        n_samples : int
-            Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
-        det : float between 0 and 1
-            Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
-        """
-
+    def compute_model(self, det = 1.):
+        """ Computes probabilistic model T[s',a,s] corresponding to the maze world. """
         n_actions = len(self.actions)
         n_states = self.dims[0]*self.dims[1]
         # compute environment dynamics as a matrix T 
@@ -142,6 +132,21 @@ class MazeWorld(object):
                 T[s_new, i, s] += det
                 for su in s_unc:
                     T[su, i, s] += (1-det)/(len(s_unc))
+        self.T = T
+        return T 
+
+    def empowerment(self, n_step, n_samples = 5000, det = 1.):
+        """ 
+        Computes the empowerment of each cell and returns as array. 
+
+        n_step : int
+            Determines the "time horizon" of the empowerment computation. The computed empowerment is the influence the agent has on the future over an n_step time horizon.
+        n_samples : int
+            Number of samples to use for sparse sampling empowerment computation (only used if the number of n-step actions exceeds 1000).         
+        det : float between 0 and 1
+            Probability of action successfully performed (otherwise a random different action is performed with probability 1 - det). When det = 1 the dynamics are deterministic. 
+        """
+        T = self.compute_model()
         E = np.zeros(self.dims)
         for y in range(self.dims[0]):
             for x in range(self.dims[1]):
@@ -203,7 +208,7 @@ def tunnel_world():
             maze.add_wall( (2 , j), "N")
             maze.add_wall( (2, j), "S")
     return maze
-    
+
 def step_world():
     n = 7
     maze = MazeWorld(n,n, toroidal=False)
