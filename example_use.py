@@ -71,7 +71,7 @@ def example_3():
         # append data for plotting 
         tau[t] = agent.tau
         D_emp[t] = np.mean((E - agent.E)**2)
-        D_mod[t] = D_mod[t] - np.sum(np.argmax(agent.T, axis=0).T == B)
+        D_mod[t] = D_mod[t] - np.sum(np.argmax(agent.T, axis=0) == np.argmax(B, axis=0))
         a = agent.act(s)
         pos = maze._index_to_cell(s)
         visited[pos[0],pos[1]] += 1
@@ -110,6 +110,6 @@ def example_3():
 
 if __name__ == "__main__":
     ## uncomment below to see examples 
-    # example_1()
+    example_1()
     # example_2()
-    example_3()
+    # example_3()
