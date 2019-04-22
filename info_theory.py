@@ -53,7 +53,8 @@ def I(Pxy):
 
 def I2(P_yx, p_x):
     """
-    Compute the mutual information between two random variables given the conditional distribution p(y|x) and p(x)
+    Compute the mutual information between two random variables given the conditional distribution
+    p(y|x) and p(x)
     
     P_yx : matrix defining p(y|x), shape (dim_Y, dim_X)  
     p_x :  defines distribution p(x), shape (dim_X,) 
@@ -75,7 +76,9 @@ def product(p_x, p_y):
 
 def blahut_arimoto(P_yx, epsilon = 0.001, deterministic = False):
     """ 
-    Compute the channel capacity C of a channel p(y|x) using the Blahut-Arimoto algorithm. To do this, finds the input distribution p(x) that maximises the mutual information I(X;Y) determined by p(y|x) and p(x).
+    Compute the channel capacity C of a channel p(y|x) using the Blahut-Arimoto algorithm. To do
+    this, finds the input distribution p(x) that maximises the mutual information I(X;Y)
+    determined by p(y|x) and p(x).
 
     P_yx : defines the channel p(y|x)
     iters : number of iterations
