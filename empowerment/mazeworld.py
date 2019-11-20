@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 import itertools
-from info_theory import blahut_arimoto
 from functools import reduce
-from empowerment import empowerment    
+from empowerment.info_theory import blahut_arimoto
+from empowerment.empowerment import empowerment
 
 class MazeWorld(object):
     """ Represents an n x m grid world with walls at various locations. Actions can be performed (N, S, E, W, "stay") moving a player around the grid world. You can't move through walls. """

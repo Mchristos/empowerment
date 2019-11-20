@@ -6,8 +6,8 @@ describing the probabilistic dynamics of an environment.
 import numpy as np 
 from functools import reduce
 import itertools
-from info_theory import blahut_arimoto
 import random
+from empowerment.info_theory import blahut_arimoto
 
 def rand_sample(p_x):
     """ 
