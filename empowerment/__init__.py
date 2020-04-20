@@ -1,35 +1,10 @@
-""" 
-Module allowing for the computation of n-step empowerment given a matrix 
-describing the probabilistic dynamics of an environment.
-"""
-
 import numpy as np 
 from functools import reduce
 import itertools
 import random
-from empowerment.info_theory import blahut_arimoto
+from empowerment.information_theory import blahut_arimoto
 
-def rand_sample(p_x):
-    """ 
-    Randomly sample a value from a probability distribution p_x
-    """
-    cumsum = np.cumsum(p_x)
-    rnd = np.random.rand()
-    return np.argmax(cumsum > rnd)
-
-def normalize(X):
-    """ 
-    Normalize vector or matrix columns X
-    """
-    return X / X.sum(axis=0)
-
-def softmax(x, tau):
-    """
-    Returns the softmax normalization of a vector x using temperature tau.
-    """
-    return normalize(np.exp(x / tau)) 
-
-def empowerment(T, det, n_step, state, n_samples=1000, epsilon = 1e-6):
+def compute_empowerment(T, det, n_step, state, n_samples=1000, epsilon = 1e-6):
     """
     Compute the empowerment of a state in a grid world  
     T : numpy array, shape (n_states, n_actions, n_states)
@@ -70,7 +45,27 @@ def empowerment(T, det, n_step, state, n_samples=1000, epsilon = 1e-6):
             Bn[:, i , :] = reduce((lambda x, y : np.dot(y, x)), map((lambda a : T[:,a,:]), an))
         return blahut_arimoto(Bn[:,:,state], epsilon=epsilon)
 
-class EmpMaxAgent:
+def rand_sample(p_x):
+    """ 
+    Randomly sample a value from a probability distribution p_x
+    """
+    cumsum = np.cumsum(p_x)
+    rnd = np.random.rand()
+    return np.argmax(cumsum > rnd)
+
+def normalize(X):
+    """ 
+    Normalize vector or matrix columns X
+    """
+    return X / X.sum(axis=0)
+
+def softmax(x, tau):
+    """
+    Returns the softmax normalization of a vector x using temperature tau.
+    """
+    return normalize(np.exp(x / tau)) 
+
+class EmpowermentMaximiser:
     """ 
     Model-based reinforcement learning agent maximising its empowerment.
     
@@ -143,4 +138,4 @@ class EmpMaxAgent:
                 self.Q[s,a] = self.R[s,a] + self.gamma*(np.sum(self.T[:,a,s]*np.max(self.Q,axis=1)))
     
     def estimateE(self, state):
-        return empowerment(self.T, self.det, self.n_step, state, n_samples = self.n_samples)
+        return compute_empowerment(self.T, self.det, self.n_step, state, n_samples = self.n_samples)

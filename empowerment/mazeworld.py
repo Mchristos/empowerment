@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import itertools
 from functools import reduce
-from empowerment.info_theory import blahut_arimoto
-from empowerment.empowerment import empowerment
+from empowerment.information_theory import blahut_arimoto
+from empowerment import compute_empowerment
 
 class MazeWorld(object):
     """ Represents an n x m grid world with walls at various locations. Actions can be performed (N, S, E, W, "stay") moving a player around the grid world. You can't move through walls. """
@@ -135,7 +135,7 @@ class MazeWorld(object):
         self.T = T
         return T 
 
-    def empowerment(self, n_step, n_samples = 5000, det = 1.):
+    def compute_empowerment(self, n_step, n_samples = 5000, det = 1.):
         """ 
         Computes the empowerment of each cell and returns as array. 
 
@@ -151,7 +151,7 @@ class MazeWorld(object):
         for y in range(self.dims[0]):
             for x in range(self.dims[1]):
                 s = self._cell_to_index((y,x))
-                E[y,x] = empowerment(T=T, det = (det == 1.), n_step = n_step, state=s, n_samples=n_samples)
+                E[y,x] = compute_empowerment(T=T, det = (det == 1.), n_step = n_step, state=s, n_samples=n_samples)
         return E
 
 def klyubin_world():
