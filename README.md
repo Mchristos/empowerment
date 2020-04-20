@@ -28,7 +28,7 @@ Clone the repo, navigate to the root directory, and pip install.
         
         git clone https://github.com/Mchristos/empowerment
         cd empowerment
-        pip install .
+        pip install -e .
 
 And you're done! Now go ahead and try the following examples. 
 
