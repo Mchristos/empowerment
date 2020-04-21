@@ -7,8 +7,8 @@ setup(
     url='http://github.com/Mchristos/empowerment',
     author='Chris',
     license='MIT',
-    packages=['empowerment']
-    #author_email='',
-    #setup_requires=['pytest-runner'],
-    #tests_require=['pytest'],
+    packages=['empowerment'],
+    install_requires=[
+        'numpy'
+    ]
 )
