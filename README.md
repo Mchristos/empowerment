@@ -1,6 +1,6 @@
 # Empowerment
 
-## What is Empowerment
+## What is Empowerment?
 
 Reinforcement learning is a powerful tool for teaching agents complex skills based on experience. However, it relies upon a supervisor or "critic" to dole out rewards, defining a norm for "good" behaviour externally. In the biological world, such supervisors rarely exist, and creatures must learn about their environments independently and autonomously.
 
@@ -20,12 +20,23 @@ This repository allows you to calculate empowerment and experiment with it in va
 - empowerment.py is a module allowing you to compute empowerment in arbitrary environments described by a probabilistic transition rule p(s'|s,a) - the probability of landing in state s' given you did action a in state s.
 - info_theory.py is a module containing various functions for computing information-theoretic quantities such as entropy, conditional entropy, mutual information, and channel capacity. It includes an implementation of the blahut-arimoto algorithm for computing the channel capacity. This is used to compute the empowerment in non-deterministic environments. 
 
-## Example Usage 
+## Install and Usage 
+
+### Install using pip
+
+Clone the repo, navigate to the root directory, and pip install. 
+        
+        git clone https://github.com/Mchristos/empowerment
+        cd empowerment
+        pip install -e .
+
+And you're done! Now go ahead and try the following examples. 
+
 
 ### Klyubin's Maze World 
 In this example we reproduce the grid world presented in the original Klyubin paper on empowerment [1]. 
 
-    from mazeworld import MazeWorld
+    from empowerment.mazeworld import MazeWorld
     import matplotlib.pyplot as plt
 
     # build klyubin maze world 
@@ -47,7 +58,7 @@ In this example we reproduce the grid world presented in the original Klyubin pa
     maze.add_wall( (8, 4), "W")
     maze.add_wall( (8, 3), "N")
     # compute the 5-step empowerment at each cell 
-    E = maze.empowerment(n_step=5)
+    E = maze.compute_empowerment(n_step=5)
     # plot the maze world
     maze.plot(colorMap=E)
     plt.title('5-step empowerment')
@@ -58,13 +69,15 @@ In this example we reproduce the grid world presented in the original Klyubin pa
 ### Doorways
 Here is another simple example of a small grid world with two doorways. The doorways are highly empowered in 4 steps, since more states are reachable within four steps from doorways. 
 
+    from empowerment.mazeworld import MazeWorld
+    import matplotlib.pyplot as plt
     maze = MazeWorld(8,8)
     for i in range(maze.width):
         if i is not 6 : maze.add_wall([2, i], "N") 
     for i in range(maze.width):
         if i is not 2 : maze.add_wall([5, i], "N")
     n_step = 4
-    E = maze.empowerment(n_step=n_step)
+    E = maze.compute_empowerment(n_step=n_step, n_samples=8000)
     maze.plot(colorMap=E)
     plt.title('%i-step empowerment' % n_step)
     plt.show()
