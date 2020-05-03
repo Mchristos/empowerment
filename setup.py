@@ -9,6 +9,7 @@ setup(
     license='MIT',
     packages=['empowerment'],
     install_requires=[
-        'numpy'
+        'numpy',
+        'matplotlib'
     ]
 )
